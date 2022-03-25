@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Scatter Plots Abstraction</title>
+
+    <link rel="shortcut icon" href="../static/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="../static/css/solid.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/regular.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/bootstrap-4.2.1.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/bootstrap-slider.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/my.css"/>
+
+    <script type="text/javascript" src="../static/scripts/library/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/jquery.ocupload-1.1.2.packed.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/three.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/popper-1.14.6.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/bootstrap-4.2.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/bootstrap-slider.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/d3-regression.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/d3.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/d3-delaunay@6.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/FileSaver.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/FileSaver.min.js"></script>
+
+    <script type="text/javascript" src="../static/scripts/library/vptree.min.js"></script>
+    <script type="text/javascript" src="../static/scripts/library/d3-array@3.js"></script>
+
+
+
+</head>
+<body style="margin: 8px">
+<script type="x-shader/x-vertex" id="vertexShader">
+    attribute float size;
+    attribute float opacity;
+    attribute vec3 customColor;
+    varying vec3 vColor;
+    varying float VOpacity;
+    void main() {
+        vColor = customColor;
+        VOpacity = opacity;
+        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+        gl_PointSize = size * ( 1630.0 / -mvPosition.z );
+        gl_Position = projectionMatrix * mvPosition;
+    }
+
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentShader">
+    uniform sampler2D pointTexture;
+    varying vec3 vColor;
+    varying float VOpacity;
+    void main() {
+        gl_FragColor = vec4( vColor, VOpacity );
+        gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
+    }
+
+</script>
+
+<script type="text/javascript" src="../static/scripts/mine/util.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/draw.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/data_handle_original.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/data_handle_HaGrid.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/data_handle_adjusted.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/data_handle_ours.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/data_handle_upload.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/ours.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/circle_packing.js"></script>
+<script type="text/javascript" src="../static/scripts/mine/curve.js"></script>
+
+
+</body>
+</html>

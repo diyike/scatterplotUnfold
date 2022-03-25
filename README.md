@@ -1,0 +1,5 @@
+## This is a demo to show our scientific research achievements
+
+​	In this demo, you can select the 50 datasets we provide.  You can also select five algorithms we provide, which are original, HaGrid, DGrid, Ours(adjusted r) and Ours(adjustable). Among those algorithms, the original means the results without handling, in which you can change the parameters: radius, transparency and sampling rate; Ours(adjusted r) means the results are ran by our algorithms with the fine-tuned parameters and you can not interact with it;  Ours(adjustable) gives you the results made by our algorithms and you can adjust the parameters: k, size and r.
+
+​	Meanwhile, you can also upload your own JSON data. It is worth noting that the JSON file you upload must have at least four attributes: ID, x, y and color. The data of uploaded files would be processed by our algorithms and you can choose to change the parameters: k, size and r.

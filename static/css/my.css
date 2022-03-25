@@ -1,0 +1,8 @@
+body {
+    -webkit-user-select: none;
+    background: white;
+}
+
+text {
+    pointer-events: none;
+}
