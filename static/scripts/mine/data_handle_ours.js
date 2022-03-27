@@ -143,7 +143,16 @@ function data_handle_ours(data_points) {
                 .attr('stroke-width', 3);
         })
         .on('click', function () {
-            update_scatterplot();
+            $("#spinner_title").html("Updating...");
+            $("#spinner_div").toggle();
+
+            setTimeout(()=>{
+                update_scatterplot();
+            }, 1);
+
+            setTimeout(()=>{
+                $("#spinner_div").toggle();
+            }, 2);
         });
 
     svg.append('text')

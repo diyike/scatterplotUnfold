@@ -349,25 +349,32 @@ const preview_div = file_upload.append('div')
 
 
 $("#file-upload").on("change", function () {
-    console.log(this.files[0].name);
+    //console.log(this.files[0].name);
+    $("#spinner_title").html("Uploading...");
+    $("#spinner_div").toggle();
     if (validFileType(this.files[0])) {
-        $("#name_preview").html(this.files[0].name);
+        setTimeout(()=>{
+            $("#name_preview").html(this.files[0].name);
 
-        const reader = new FileReader()
-        // read file
-        reader.readAsText(this.files[0], "UTF-8")
-        reader.onload = function (e) {
-            has_upload = 1;
-            //read contents
-            const fileString = e.target.result;
-            uploaded_data = JSON.parse(fileString);
-            //console.log(uploaded_data)
-        }
-        console.log(`uploaded file path is ${this.value}`);
+            const reader = new FileReader()
+            // read file
+            reader.readAsText(this.files[0], "UTF-8")
+            reader.onload = function (e) {
+                has_upload = 1;
+                //read contents
+                const fileString = e.target.result;
+                uploaded_data = JSON.parse(fileString);
+                //console.log(uploaded_data)
+            }
+            //console.log(`uploaded file path is ${this.value}`);
 
-        initialize_slider_value();
+            initialize_slider_value();
+        }, 1);
 
-        update_plot();
+        setTimeout(()=>{
+            $("#spinner_title").html("Computing...");
+            update_plot();
+        }, 2);
     } else {
         $("#name_preview").html('File ' + this.files[0].name + ' is not a json file. Please update your selection');
     }
@@ -376,6 +383,30 @@ $("#file-upload").on("change", function () {
 function validFileType(file) {
     return fileTypes.includes(file.type);
 }
+
+//spinner
+const spinner_div = select_div.append('div')
+    .attr('id', 'spinner_div')
+    .style('margin-left', '60px')
+    .style('display', 'flex')
+
+$("#spinner_div").hide(); // hide spinner_div
+
+const spinner_button = spinner_div.append('button')
+    .attr('class', 'btn btn-primary')
+    .attr('type', 'button')
+    .style('display', 'flex')
+    .style('align-items', 'center');
+
+spinner_button.append('span')
+    .attr('class', 'spinner-border spinner-border-sm')
+    .attr('role', 'status')
+    .attr('aria-hidden', 'true')
+
+spinner_button.append('div')
+    .attr('id', 'spinner_title')
+    .style('width', '120px')
+    .html('Processing...')
 
 const plot_div = board.append('div')
     .style('display', 'flex')
@@ -811,12 +842,86 @@ function update_plot() {
     file_path = "static/data/" + menu + "/" + data_name + ".json";
 
     d3.json(file_path).then(function (data_points) {
-        if (has_upload == 1) data_handle_upload();
-        else if (algorithm == "Original") data_handle_original(data_points);
-        else if (algorithm == "HaGrid") data_handle_HaGrid(data_points);
-        else if (algorithm == "DGrid") data_handle_DGrid(data_points);
-        else if (algorithm == "Ours(adjusted r)") data_handle_adjusted(data_points);
-        else if (algorithm == "Ours(adjustable)") data_handle_ours(data_points);
+        if (has_upload == 1){
+            if(k != 3 || size != 5){
+                $("#spinner_div").toggle();
+            }
+
+            setTimeout(()=>{
+                data_handle_upload();
+            }, 1);
+
+            setTimeout(()=>{
+                $("#spinner_div").toggle();
+            }, 2);
+        }
+        else if (algorithm == "Original"){
+            $("#spinner_title").html("Processing...");
+            $("#spinner_div").toggle();
+
+            setTimeout(()=>{
+                data_handle_original(data_points);
+            }, 1);
+
+            setTimeout(()=>{
+                $("#spinner_div").toggle();
+            }, 2);
+        }
+        else if (algorithm == "HaGrid"){
+            $("#spinner_title").html("Processing...");
+            $("#spinner_div").toggle();
+
+            setTimeout(()=>{
+                data_handle_HaGrid(data_points);
+            }, 1);
+
+            setTimeout(()=>{
+                $("#spinner_div").toggle();
+            }, 2);
+        }
+        else if (algorithm == "DGrid"){
+            $("#spinner_title").html("Processing...");
+            $("#spinner_div").toggle();
+
+            setTimeout(()=>{
+                data_handle_DGrid(data_points);
+            }, 1);
+
+            setTimeout(()=>{
+                $("#spinner_div").toggle();
+            }, 2);
+        }
+        else if (algorithm == "Ours(adjusted r)"){
+            $("#spinner_title").html("Processing...");
+            $("#spinner_div").toggle();
+
+            setTimeout(()=>{
+                data_handle_adjusted(data_points);
+            }, 1);
+
+            setTimeout(()=>{
+                $("#spinner_div").toggle();
+            }, 2);
+        }
+        else if (algorithm == "Ours(adjustable)"){
+            if (k_change == 1 || size_change == 1){
+                $("#spinner_title").html("Computing...");
+            }
+            else{
+                $("#spinner_title").html("Processing...");
+            }
+
+            $("#spinner_div").toggle();
+
+            setTimeout(()=>{
+                data_handle_ours(data_points);
+            }, 1);
+
+            setTimeout(()=>{
+                $("#spinner_div").toggle();
+            }, 2);
+        }
+
     })
 }
 
