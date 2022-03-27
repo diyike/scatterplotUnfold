@@ -123,7 +123,6 @@ function draw(points) {
             if(show == 0){
                 renderer.render(scene, camera);
                 show = 1;
-                console.log(1);
             }
         });
 }

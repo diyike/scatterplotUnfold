@@ -814,6 +814,7 @@ function update_plot() {
         if (has_upload == 1) data_handle_upload();
         else if (algorithm == "Original") data_handle_original(data_points);
         else if (algorithm == "HaGrid") data_handle_HaGrid(data_points);
+        else if (algorithm == "DGrid") data_handle_DGrid(data_points);
         else if (algorithm == "Ours(adjusted r)") data_handle_adjusted(data_points);
         else if (algorithm == "Ours(adjustable)") data_handle_ours(data_points);
     })
