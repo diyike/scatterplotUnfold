@@ -75,7 +75,7 @@ function draw(points) {
     const material = new THREE.ShaderMaterial({
         uniforms: {
             pointTexture: {
-                value: new THREE.TextureLoader().load("../static/pointTexture.png")
+                value: new THREE.TextureLoader().load("static/pointTexture.png")
             }
         },
         vertexShader: document.getElementById('vertexShader').textContent.replace('1630.0', round(1630 * scale) + '.0'),
