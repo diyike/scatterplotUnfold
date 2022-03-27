@@ -112,7 +112,6 @@ function draw(points) {
         .scale(initial_scale)
         .translate(-width / 2, height / 2)
     zoomBehavior.transform(canvas, initial_transform);
-    camera.position.set( width / 2, height / 2, get_camera_z(initial_scale));
     camera.fov = needed_fov(height, camera.position.z, initial_scale);
     camera.updateProjectionMatrix();
 
