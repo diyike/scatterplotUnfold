@@ -73,8 +73,7 @@ function ours(data_points) {
 
     const random = d3.randomUniform(0, size);
     max_grid_length = d3.max(grids, d => d.length);
-    // console.log('max_grid_length', max_grid_length);
-    // if (max_grid_length < k) console.log('ERROR!!!!!')
+
     const r = sqrt(s / PI / max_grid_length);
 
     const packing_points = [];

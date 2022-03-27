@@ -234,6 +234,7 @@ $('a.dropdown-item').on('click', function () {
         has_upload = 0;
         k_change = 0;
         size_change = 0;
+        max_grid_length = data_name2values[data_name][2];
 
         $("#name_preview").html('No files is uploaded');
 
@@ -415,6 +416,7 @@ const svg = plot_div.append('div')
     .style('height', (svg_height + 5) + 'px')
     .style('border', '2px solid #888')
     .style('margin-left', 100 + 'px')
+    .style('background', "#ececec")
     .append('svg')
     .attr('width', svg_width)
     .attr('height', svg_height)
@@ -817,6 +819,33 @@ function update_plot() {
     })
 }
 
+function data_formal(data_points){
+    const [x_min, x_max] = d3.extent(data_points, d => d.x);
+    const [y_min, y_max] = d3.extent(data_points, d => d.y);
+    const w = x_max - x_min;
+    const h = y_max - y_min;
+
+    const scale_x = d3.scaleLinear()
+        .domain([x_min, x_max])
+        .range([0, canvas_width]);
+    const scale_y = d3.scaleLinear()
+        .domain([y_min, y_max])
+        .range([0, canvas_height]);
+
+    for (const p of data_points) {
+        if (w < h) {
+            p.r = canvas_width / h * p.r;
+        } else {
+            p.r = canvas_width / w * p.r;
+        }
+
+        p.x = scale_x(p.x);
+        p.y = scale_y(p.y);
+    }
+
+    return data_points;
+}
+
 function original_slider_control_disable() {
     original_div.style('background', "#ececec");
     $(".original_slider_input").slider("disable");
@@ -875,6 +904,7 @@ function original_slider_control_enable() {
 
 function ours_slider_control_disable() {
     ours_div.style('background', "#ececec");
+    svg.style('background', "#ececec");
     $(".ours_slider_input").slider("disable");
 
     $("#k .slider-selection").css({
@@ -895,6 +925,7 @@ function ours_slider_control_disable() {
 
 function ours_slider_control_enable() {
     ours_div.style('background', "#ffffff");
+    svg.style('background', "#ffffff");
     $(".ours_slider_input").slider("enable");
 
     $("#k .slider-selection").css({

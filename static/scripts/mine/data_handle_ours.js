@@ -3,47 +3,17 @@ function data_handle_ours(data_points) {
     ours_slider_control_enable();
 
     if (k_change == 1 || size_change == 1) {
-        const [x_min, x_max] = d3.extent(data_points, d => d.x);
-        const [y_min, y_max] = d3.extent(data_points, d => d.y);
-        const w = x_max - x_min;
-        const h = y_max - y_min;
-
-        const scale_x = d3.scaleLinear()
-            .domain([x_min, x_max])
-            .range([0, canvas_width]);
-        const scale_y = d3.scaleLinear()
-            .domain([y_min, y_max])
-            .range([0, canvas_height]);
-
-        for (const p of data_points) {
-            if (w < h) {
-                p.r = canvas_width / h * p.r;
-            } else {
-                p.r = canvas_width / w * p.r;
-            }
-
-            p.x = scale_x(p.x);
-            p.y = scale_y(p.y);
-        }
+        data_points = data_formal(data_points);
 
         data_points = ours(data_points);
         k_density = k / max_grid_length;
     }
 
     const point_num = data_points.length;
-    const [min_x, max_x] = d3.extent(data_points, d => d.x);
-    const [min_y, max_y] = d3.extent(data_points, d => d.y);
-    const width = max_x - min_x;
-    const height = max_y - min_y;
 
-    const x_scale = d3.scaleLinear()
-        .domain([min_x, max_x])
-        .range([0, canvas_width]);
-    const y_scale = d3.scaleLinear()
-        .domain([min_y, max_y])
-        .range([0, canvas_height]);
+    data_points = data_formal(data_points);
 
-    const point_num_text = statistics_svg.append('text')
+    statistics_svg.append('text')
         .attr('font-size', '20px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'hanging')
@@ -56,6 +26,7 @@ function data_handle_ours(data_points) {
     console.log('num of data points:', point_num);
     data_points.sort((a, b) => a['grid_density'] - b['grid_density']);
     const densities = data_points.map(d => d['grid_density']);
+
     const labels = data_points.map(d => d['label']);
 
     let label_set = new Set();
@@ -63,7 +34,7 @@ function data_handle_ours(data_points) {
         label_set.add(value);
     })
 
-    const label_num_text = statistics_svg.append('text')
+    statistics_svg.append('text')
         .attr('font-size', '20px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'hanging')
@@ -78,13 +49,6 @@ function data_handle_ours(data_points) {
     const data_points1 = data_points.slice(k_index);
     const densities0 = data_points0.map(d => d['density']);
 
-    for (const p of data_points) {
-        if (width < height) {
-            p.r = canvas_width / height * p.r;
-        } else {
-            p.r = canvas_width / width * p.r;
-        }
-    }
     const [min_r, max_r] = d3.extent(data_points, d => d.r);
     for (const p of data_points) p.draw_r = min_r;
     let cur_quantile = 1;
@@ -94,9 +58,6 @@ function data_handle_ours(data_points) {
     data_points.map(function (item) {
         if (special_data_symbol == 0) item.color = color_scheme1[item.label % 10];
         if (special_data_symbol == 1) item.color = color_scheme2[item.label];
-
-        item.x = x_scale(item.x);
-        item.y = y_scale(item.y);
 
         json_array.push({
             x: item['x'],
@@ -118,6 +79,8 @@ function data_handle_ours(data_points) {
         .domain([0, max_r * 4])
         .range([curve_g_height, 0]);
     const min_r_y = r_scale(min_r);
+
+    //console.log(data_points);
 
     // min_r_text
     svg.append('text')
@@ -231,6 +194,8 @@ function data_handle_ours(data_points) {
         .domain([0, d3.max(densities0)])
         .thresholds(d3.ticks(0, d3.max(densities0), bin_count0));
     const bins0 = histogram0(data_points0);
+
+    console.log("bins0", bins0);
 
     histogram_g0.selectAll("rect").data(bins0)
         .enter()

@@ -1,6 +1,8 @@
 function draw(points) {
     const board = document.getElementById('board');
 
+    let show = 0;
+
     const {width, height} = board.getElementsByTagName('canvas')[0].getBoundingClientRect();
 
     function get_camera_z(zoom_level) {
@@ -28,6 +30,21 @@ function draw(points) {
         renderer.render(scene, camera);
     }
 
+    const render_initialize = function (){
+        if(show == 0){
+            camera.position.x = width / 2;
+            camera.position.y = height / 2;
+            camera.position.z = get_camera_z(1);
+            camera.fov = needed_fov(height, camera.position.z, 1);
+            camera.updateProjectionMatrix();
+            renderer.render(scene, camera);
+
+            console.log(show);
+
+            show = 1;
+        }
+    }
+
     const zoomBehavior = d3.zoom()
         .scaleExtent([1 / 4, 64])
         .extent([[0, 0], [width, height]])
@@ -37,8 +54,7 @@ function draw(points) {
 
     const camera = new THREE.PerspectiveCamera(90, width / height, 1, 100000);
     const scene = new THREE.Scene();
-    //scene.background = new THREE.Color(0xffffff);
-    //scene.background = new THREE.Color(0x000000);
+
     scene.add(camera);
 
     const renderer = new THREE.WebGLRenderer({antialias: true, canvas: canvas.node(), alpha: true});
@@ -88,6 +104,7 @@ function draw(points) {
     const circles = new THREE.Points(geometry, material);
     scene.add(circles);
 
+
     const initial_scale = 1;
 
     let initial_transform = d3.zoomIdentity
@@ -95,13 +112,19 @@ function draw(points) {
         .scale(initial_scale)
         .translate(-width / 2, height / 2)
     zoomBehavior.transform(canvas, initial_transform);
+    camera.position.set( width / 2, height / 2, get_camera_z(initial_scale));
+    camera.fov = needed_fov(height, camera.position.z, initial_scale);
+    camera.updateProjectionMatrix();
+
     canvas.call(zoomBehavior);
 
-    // camera.position.x = -(0 - width / 2) / initial_scale;
-    // camera.position.y = (800 - height / 2) / initial_scale;
-    // camera.position.z = get_camera_z(log(initial_scale));
-    // camera.fov = needed_fov(height, camera.position.z, initial_scale);
-    // camera.updateProjectionMatrix();
-    renderer.render(scene, camera);
-    renderer.render(scene, camera);
+    //render_initialize();
+
+    canvas.on("mouseover", function (){
+            if(show == 0){
+                renderer.render(scene, camera);
+                show = 1;
+                console.log(1);
+            }
+        });
 }

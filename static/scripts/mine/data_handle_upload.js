@@ -2,10 +2,9 @@ function data_handle_upload() {
     original_slider_control_disable();
     ours_slider_control_enable();
 
-    let data_points = ours(uploaded_data);
+    let data_points = data_formal(uploaded_data);
 
-    console.log(data_points);
-
+    //console.log(data_points);
     const vptree = VPTreeFactory.build(data_points, dis);
     for (const point of data_points) {
         const neighbors = vptree.search(point, 6);
@@ -13,7 +12,9 @@ function data_handle_upload() {
         point['grid_density'] = point['density'];
         point['density'] = density;
     }
-    console.log(data_points);
+
+    data_points = ours(data_points);
+    //console.log(data_points);
 
     const point_num = data_points.length;
 
@@ -31,9 +32,14 @@ function data_handle_upload() {
     data_points.sort((a, b) => a['grid_density'] - b['grid_density']);
     const densities = data_points.map(d => d['grid_density']);
 
+    k_density = k / max_grid_length;
+
     const k_index = d3.bisectCenter(densities, k_density);
+
     const data_points0 = data_points.slice(0, k_index);
+    console.log("data_points0", data_points0);
     const data_points1 = data_points.slice(k_index);
+    console.log("data_points1", data_points1);
     const densities0 = data_points0.map(d => d['density']);
 
     for (const p of data_points) p.r *= (canvas_width - 20) / 780;
@@ -42,8 +48,6 @@ function data_handle_upload() {
     let cur_quantile = 1;
     let cur_density = 1;
     let cur_r = min_r;
-
-    console.log(data_points[0])
 
     data_points.map(function (item){
         if(item.color == undefined){
@@ -72,6 +76,8 @@ function data_handle_upload() {
         .domain([0, max_r * 4])
         .range([curve_g_height, 0]);
     const min_r_y = r_scale(min_r);
+
+    console.log(data_points);
 
     // min_r_text
     svg.append('text')
@@ -185,6 +191,8 @@ function data_handle_upload() {
         .domain([0, d3.max(densities0)])
         .thresholds(d3.ticks(0, d3.max(densities0), bin_count0));
     const bins0 = histogram0(data_points0);
+
+    console.log("bins0", bins0);
 
     histogram_g0.selectAll("rect").data(bins0)
         .enter()
