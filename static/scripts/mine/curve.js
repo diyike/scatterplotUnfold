@@ -193,7 +193,7 @@ const board = d3.select('body')
 const title = board
     .append('div')
     .attr('id', 'title_div')
-    .style('height', '200px')
+    .style('height', $('#title_div').width() * 200/1192+ 'px')
     .style('margin', '20px')
     .style('margin-bottom', '60px')
     .style('border', '10px dashed #2E8B57')
@@ -210,8 +210,8 @@ const select_div = board
     .attr('id', 'select_div')
     .style('display', 'flex')
     .style('width', '100%')
-    .style('margin-bottom', '30px')
-    .style('height', select_div_height + 'px');
+    .style('margin-bottom', '40px')
+    .style('height', $('#select_div').width() * select_div_height/1200 + 'px');
 
 
 //DataSets choose
@@ -884,59 +884,67 @@ function update_plot() {
 
                 setTimeout(()=>{
                     data_handle_upload();
-                }, 1);
+                }, 10);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 2);
+                }, 20);
             }
             else if (algorithm == "Original"){
                 $("#spinner_title").html("Processing...");
-                $("#spinner_div").toggle();
+                setTimeout(()=>{
+                    $("#spinner_div").toggle();
+                }, 0)
 
                 setTimeout(()=>{
                     data_handle_original(data_points);
-                }, 1);
+                }, 10);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 2);
+                }, 20);
             }
             else if (algorithm == "HaGrid"){
                 $("#spinner_title").html("Processing...");
-                $("#spinner_div").toggle();
+                setTimeout(()=>{
+                    $("#spinner_div").toggle();
+                }, 0)
 
                 setTimeout(()=>{
                     data_handle_HaGrid(data_points);
-                }, 1);
+                }, 10);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 2);
+                }, 20);
             }
             else if (algorithm == "DGrid"){
                 $("#spinner_title").html("Processing...");
-                $("#spinner_div").toggle();
+                setTimeout(()=>{
+                    $("#spinner_div").toggle();
+                }, 0)
 
                 setTimeout(()=>{
                     data_handle_DGrid(data_points);
-                }, 1);
+                }, 10);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 2);
+                }, 20);
             }
             else if (algorithm == "Ours(adjusted r)"){
                 $("#spinner_title").html("Processing...");
-                $("#spinner_div").toggle();
+                setTimeout(()=>{
+                    $("#spinner_div").toggle();
+                }, 0)
 
                 setTimeout(()=>{
                     data_handle_adjusted(data_points);
-                }, 1);
+                }, 10);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 2);
+                }, 20);
             }
             else if (algorithm == "Ours(adjustable)"){
                 if (k_change == 1 || size_change == 1){
@@ -946,15 +954,17 @@ function update_plot() {
                     $("#spinner_title").html("Processing...");
                 }
 
-                $("#spinner_div").toggle();
+                setTimeout(()=>{
+                    $("#spinner_div").toggle();
+                }, 1)
 
                 setTimeout(()=>{
                     data_handle_ours(data_points);
-                }, 1);
+                }, 10);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 2);
+                }, 20);
             }
 
         })
