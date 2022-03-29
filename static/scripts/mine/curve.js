@@ -13,6 +13,9 @@ const _curve_g_width = _svg_width - _left_padding - _right_padding;
 const _k_x = 100;
 const canvas_width = 800;
 const canvas_height = 800;
+const scale = window.devicePixelRatio < 2 ? 3 - window.devicePixelRatio : 1;
+
+console.log(scale);
 
 //mapping of labels and colors
 const color_scheme1 = [
@@ -193,7 +196,7 @@ const board = d3.select('body')
 const title = board
     .append('div')
     .attr('id', 'title_div')
-    .style('height', $('#title_div').width() * 200/1192+ 'px')
+    .style('height', $('#title_div').width() * 200/1192/scale+ 'px')
     .style('margin', '20px')
     .style('margin-bottom', '60px')
     .style('border', '10px dashed #2E8B57')
@@ -203,7 +206,7 @@ const title = board
     .style('justify-content', 'center')
     .style('align-items', 'center')
     .html('scatterplotUnfold')
-    .style('font-size', $('#title_div').width() * 60/1192+ 'px')
+    .style('font-size', $('#title_div').width() * 60/1192/scale+ 'px')
     .style('font-weight', 'bold')
 
 const select_div = board
@@ -212,9 +215,10 @@ const select_div = board
     .style('display', 'flex')
     .style('width', '100%')
     .style('margin-bottom', '40px')
-    .style('height', $('#select_div').width() * select_div_height/1200 + 'px');
+    .style('height', $('#select_div').width() * select_div_height/1200/scale + 'px');
 
-
+//console.log($('#title_div').width())
+//console.log($('#select_div').width())
 //DataSets choose
 const data_choose_input_div = select_div.append('div')
     .attr('id', 'data_choose_input_div')
@@ -222,7 +226,7 @@ const data_choose_input_div = select_div.append('div')
 
 data_choose_input_div.append('text')
     .text('Dataset: ')
-    .style('font-size', $('#select_div').width()*20/1800 + 'px')
+    .style('font-size', $('#select_div').width()*20/1800/scale + 'px')
 
 data_choose_input_div.append('button')
     .attr('class', 'btn btn-secondary dropdown-toggle')
@@ -232,10 +236,10 @@ data_choose_input_div.append('button')
     .attr('aria-haspopup', 'true')
     .attr('aria-expanded', 'false')
     .style('text-align', 'center')
-    .style('width', $('#select_div').width()*360/1800 + 'px')
+    .style('width', $('#select_div').width()*360/1800/scale + 'px')
     //.style('height', $('#select_div').width()*36/1400 + 'px')
     .html(data_name)
-    .style('font-size', $('#select_div').width()*13/1800 + 'px');
+    .style('font-size', $('#select_div').width()*13/1800/scale + 'px');
 
 data_choose_input_div.append('div')
     .attr('class', 'dropdown-menu')
@@ -273,11 +277,11 @@ $('a.dropdown-item').on('click', function () {
 const algor_choose_input_div = select_div.append('div')
     .attr('id', 'algor_choose_input_div')
     .attr('class', 'dropdown show')
-    .style('margin-left', $('#select_div').width()*20/1800 + 'px');
+    .style('margin-left', $('#select_div').width()*20/1800/scale + 'px');
 
 algor_choose_input_div.append('text')
     .text('Algorithm: ')
-    .style('font-size', $('#select_div').width()*20/1800 + 'px');
+    .style('font-size', $('#select_div').width()*20/1800/scale + 'px');
 
 algor_choose_input_div.append('button')
     .attr('class', 'btn btn-secondary dropdown-toggle')
@@ -286,10 +290,10 @@ algor_choose_input_div.append('button')
     .attr('data-toggle', 'dropdown')
     .attr('aria-haspopup', 'true')
     .attr('aria-expanded', 'false')
-    .style('width', $('#select_div').width()*240/1800 + 'px')
+    .style('width', $('#select_div').width()*240/1800/scale + 'px')
     //.style('height', $('#select_div').width()*36/1400 + 'px')
     .html(algorithm)
-    .style('font-size', $('#select_div').width()*13/1800 + 'px');;
+    .style('font-size', $('#select_div').width()*13/1800/scale + 'px');;
 
 algor_choose_input_div.append('div')
     .attr('class', 'dropdown-menu')
@@ -324,7 +328,7 @@ $('b.dropdown-item').on('click', function () {
 const file_upload = select_div.append('div')
     .attr('id', 'file_upload_div')
     .attr('class', 'dropdown show')
-    .style('margin-left', $('#select_div').width()*65/1800 + 'px')
+    .style('margin-left', $('#select_div').width()*65/1800/scale + 'px')
     .style('display', 'flex')
 
 const file_upload_div = file_upload.append('form')
@@ -338,7 +342,7 @@ file_upload_div.append('label')
     .style('border-radius', '4%')
     .style('padding', '4px 10px')
     .html('upload json file')
-    .style('font-size', $('#select_div').width()*10/1800 + 'px')
+    .style('font-size', $('#select_div').width()*10/1800/scale + 'px')
     .style('font-weight', 'bold')
 
 file_upload_div.append('input')
@@ -369,11 +373,11 @@ const preview_div = file_upload.append('div')
     .attr('id', 'name_preview')
     .style('display', 'flex')
     .style('align-items', 'center')
-    .style('margin-left', $('#select_div').width()*25/1800 + 'px')
+    .style('margin-left', $('#select_div').width()*25/1800/scale + 'px')
     .style('line-height', '100%')
     .html('No files is uploaded')
     .style('font-weight', '600')
-    .style('font-size', $('#select_div').width()*15/1800 + 'px');
+    .style('font-size', $('#select_div').width()*15/1800/scale + 'px');
 
 
 $("#file-upload").on("change", function () {
@@ -419,7 +423,7 @@ function validFileType(file) {
 //spinner
 const spinner_div = select_div.append('div')
     .attr('id', 'spinner_div')
-    .style('margin-left', $('#select_div').width()*60/1800 + 'px')
+    .style('margin-left', $('#select_div').width()*60/1800/scale + 'px')
     .style('display', 'flex')
 
 $("#spinner_div").hide(); // hide spinner_div
@@ -437,13 +441,15 @@ spinner_button.append('span')
 
 spinner_button.append('div')
     .attr('id', 'spinner_title')
-    .style('width', $('#select_div').width()*120/1800 + 'px')
-    .style('margin-left', $('#select_div').width()*10/1800 + 'px')
+    .style('width', $('#select_div').width()*120/1800/scale + 'px')
+    .style('margin-left', $('#select_div').width()*10/1800/scale + 'px')
     .html('Processing...')
-    .style('font-size', $('#select_div').width()*13/1800 + 'px');
+    .style('font-size', $('#select_div').width()*13/1800/scale + 'px');
 
 const plot_div = board.append('div')
+    .attr('id', 'plot_div')
     .style('display', 'flex')
+    .style('justify-content', 'center')
     //.style('flex-wrap', 'wrap')
     .style('width', '100%')
     //.style('height', div_height + 'px');
@@ -451,13 +457,13 @@ const plot_div = board.append('div')
 
 const l_win = plot_div.append('div')
     .attr('id', 'l_win')
-    .style('width', '47.5%')
-    .style('height', '43vw')
+    .style('width', $('#plot_div').width() * 45/100 + 'px')
+    .style('height', $('#plot_div').width() * 45/100 + 'px')
     .style('border', '2px solid #888')
     .style('background-color', 'white')
     .style('position', 'relative');
 
-console.log($('#l_win').width(), $('#l_win').height())
+//console.log($('#l_win').width(), $('#l_win').height())
 
 
 const canvas = l_win.append('canvas')
@@ -465,26 +471,26 @@ const canvas = l_win.append('canvas')
     .attr('width', $('#l_win').width())
     .attr('height', $('#l_win').height())
     .style('background-color', 'white')
-    .style('position', 'absolute');
+    //.style('position', 'absolute');
 
 const font_awesome_svg = l_win.append('svg')
     .attr('id', 'font_awesome_svg')
     .attr('width', $('#l_win').width() * 5/100)
     .attr('height', $('#l_win').width() / 8)
-    .attr('transform', `translate(${$('#l_win').width() * 0.935}, ${$('#l_win').width() * 0.0125})`)
+    .attr('transform', `translate(${-$('#l_win').width() * 0.065}, ${$('#l_win').width() * 0.0125})`)
     .style('position', 'absolute');
 
 const statistics_svg = l_win.append('svg')
     .attr('id', 'statistics_svg')
     .attr('width', $('#l_win').width()*300/800)
     .attr('height', $('#l_win').width()*50/800)
-    .attr('transform', `translate(${$('#l_win').width()*5/800}, ${$('#l_win').width()*5/800})`)
+    .attr('transform', `translate(${-$('#l_win').width()*795/800}, ${$('#l_win').width()*5/800})`)
     .style('position', 'absolute');
 
 const svg = plot_div.append('div')
     .attr('id', 'svg_div')
-    .style('width', '47.5%')
-    .style('height', '43vw')
+    .style('width', $('#plot_div').width() * 45/100 + 'px')
+    .style('height', $('#plot_div').width() * 45.6/100 + 'px')
     .style('border', '2px solid #888')
     .style('margin-left', '5%')
     .style('background', "#ececec")
@@ -581,8 +587,10 @@ const light_text = toolbox_g.append('text')
 
 
 const control_div = board.append('div')
+    .attr('id', 'control_div')
     .style('margin-top', '40px')
     .style('display', 'flex')
+    .style('justify-content', 'center')
     .style('width', '100%');
     //.style('height', '370px');
 
@@ -591,7 +599,7 @@ const original_div = control_div.append('div')
     .style('display', 'flex')
     .style('flex-direction', 'column')
     .style('padding', '20px')
-    .style('width', '47.5%')
+    .style('width', $('#control_div').width() * 45.5/100 + 'px')
     .style('border', '3px dashed #888')
     .style('border-radius', '1.5%');
 
@@ -617,8 +625,8 @@ const ours_div = control_div.append('div')
     .style('display', 'flex')
     .style('flex-direction', 'column')
     .style('padding', '20px')
-    .style('width', '47.5%')
-    .style('margin-left', '5%')
+    .style('width', $('#control_div').width() * 45/100 + 'px')
+    .style('margin-left', $('#control_div').width() * 5/100 + 'px')
     .style('border', '3px dashed #888')
     .style('border-radius', '1.5%');
 
@@ -1018,16 +1026,16 @@ function data_formal_for_draw(data_points){
 
     const scale_x = d3.scaleLinear()
         .domain([x_min, x_max])
-        .range([0, canvas_width]);
+        .range([0, width]);
     const scale_y = d3.scaleLinear()
         .domain([y_min, y_max])
-        .range([0, canvas_height]);
+        .range([0, height]);
 
     for (const p of data_points) {
         if (w < h) {
-            p.r = canvas_width / h * p.r;
+            p.r = width / h * p.r;
         } else {
-            p.r = canvas_width / w * p.r;
+            p.r = height / w * p.r;
         }
 
         p.x = scale_x(p.x);

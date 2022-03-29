@@ -1,8 +1,6 @@
 function draw(points) {
     const board = document.getElementById('board');
 
-    let show = 0;
-
     const {width, height} = board.getElementsByTagName('canvas')[0].getBoundingClientRect();
 
     function get_camera_z(zoom_level) {
@@ -105,7 +103,7 @@ function draw(points) {
     scene.add(circles);
 
 
-    const initial_scale = 1 * width / canvas_width;
+    const initial_scale = 1;
 
     let initial_transform = d3.zoomIdentity
         .translate(width / 2, height / 2)
@@ -119,10 +117,8 @@ function draw(points) {
 
     //render_initialize();
 
-    canvas.on("mouseover", function (){
-            if(show == 0 || show == 1){
-                renderer.render(scene, camera);
-                show++;
-            }
-        });
+    setTimeout(()=>{
+        renderer.render(scene, camera);
+    }, 150);
+
 }

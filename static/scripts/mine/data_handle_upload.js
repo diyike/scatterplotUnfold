@@ -22,7 +22,7 @@ function data_handle_upload() {
     }
 
     data_points = ours(data_points);
-    data_points = data_formal(data_points);
+    data_points = data_formal_for_draw(data_points);
     //console.log(data_points);
 
     const point_num = data_points.length;

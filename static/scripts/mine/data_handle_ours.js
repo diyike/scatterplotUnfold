@@ -19,7 +19,7 @@ function data_handle_ours(data_points) {
 
     const point_num = data_points.length;
 
-    data_points = data_formal(data_points);
+    data_points = data_formal_for_draw(data_points);
 
     statistics_svg.append('text')
         .attr('font-size', $('#l_win').width()/40)

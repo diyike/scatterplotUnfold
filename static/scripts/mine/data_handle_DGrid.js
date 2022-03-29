@@ -2,6 +2,10 @@ function data_handle_DGrid(data_points){
     original_slider_control_disable();
     ours_slider_control_disable();
 
+    const board = document.getElementById('board');
+    const {width, height} = board.getElementsByTagName('canvas')[0].getBoundingClientRect();
+
+
     console.log("original data start handle");
     d3.shuffle(data_points)
     data_points = data_points.slice(0, Math.round(original_data_s * data_points.length))
@@ -23,8 +27,8 @@ function data_handle_DGrid(data_points){
     const labels = data_points.map(d => d['label']);
     const [min_x, max_x] = d3.extent(data_points, d => d.x);
     const [min_y, max_y] = d3.extent(data_points, d => d.y);
-    const width = max_x - min_x;
-    const height = max_y - min_y;
+    const w = max_x - min_x;
+    const h = max_y - min_y;
 
     let label_set = new Set();
     labels.forEach(function(value, key) {
@@ -43,10 +47,10 @@ function data_handle_DGrid(data_points){
 
     const x_scale = d3.scaleLinear()
         .domain([min_x, max_x])
-        .range([0, canvas_width]);
+        .range([0, width]);
     const y_scale = d3.scaleLinear()
         .domain([min_y, max_y])
-        .range([0, canvas_height]);
+        .range([0, height]);
 
 
     data_points.map(function (item){
@@ -57,11 +61,11 @@ function data_handle_DGrid(data_points){
             item.color = color_scheme2[item.label];
         };
 
-        if(width < height){
-            item.size = canvas_width/height * item.size;
+        if(w < h){
+            item.size = width/h * item.size;
         }
         else{
-            item.size = canvas_width/width * item.size;
+            item.size = width/w * item.size;
         }
 
         item.x = x_scale(item.x);
