@@ -188,7 +188,7 @@ const board = d3.select('body')
     .style('border', '6px solid #66CDAA')
     .style('border-radius', '2%')
     .style('padding', '20px')
-    .style('background-color', '#F8F8FF')
+    .style('background-color', '#fafffa')
 
 const title = board
     .append('div')
@@ -197,6 +197,7 @@ const title = board
     .style('margin', '20px')
     .style('margin-bottom', '60px')
     .style('border', '10px dashed #2E8B57')
+    .style('background-color', 'white')
     .style('border-radius', '2%')
     .style('display', 'flex')
     .style('justify-content', 'center')
