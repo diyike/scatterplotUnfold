@@ -1,4 +1,12 @@
 function data_handle_upload() {
+    const left_padding = $('#svg_div').width() * _left_padding / _svg_width;
+    const right_padding = $('#svg_div').width() * _right_padding / _svg_width;
+    const bottom_padding = $('#svg_div').height() * _bottom_padding / _svg_height;
+    const top_padding = $('#svg_div').height() * _top_padding / _svg_height;
+    const curve_g_height = $('#svg_div').height() * _curve_g_height / _svg_height;
+    const curve_g_width = $('#svg_div').width() * _curve_g_width / _svg_width;
+    const k_x = $('#svg_div').width() * _k_x / _svg_width;
+
     original_slider_control_disable();
     ours_slider_control_enable();
 
@@ -18,13 +26,13 @@ function data_handle_upload() {
 
     const point_num = data_points.length;
 
-    const point_num_text = statistics_svg.append('text')
-        .attr('font-size', '20px')
+    statistics_svg.append('text')
+        .attr('font-size', $('#l_win').width()/40)
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'hanging')
         .attr('text-anchor', 'start')
-        .attr('x', 5)
-        .attr('y', 5)
+        .attr('x', $('#l_win').width()/160)
+        .attr('y', $('#l_win').width()/160)
         .attr('fill', light_on ? 'black' : 'white')
         .text('point num: ' + point_num);
 
@@ -82,14 +90,14 @@ function data_handle_upload() {
     // min_r_text
     svg.append('text')
         .attr('id', 'min_r_text')
-        .attr('font-size', '13px')
+        .attr('font-size', $('#svg_div').width() * 13/_svg_width + 'px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'middle')
         .attr('text-anchor', 'end')
         .attr('font-weight', 'bold')
         .attr('x', left_padding)
         .attr('y', min_r_y + top_padding)
-        .attr('dx', -5)
+        .attr('dx', $('#svg_div').width() * (-5)/_svg_width)
         .text(d3.format(".2f")(min_r));
 
     const histogram_g = svg.append('g')
@@ -104,14 +112,17 @@ function data_handle_upload() {
         .attr('id', 'density_axis_g')
         .attr('transform', `translate(${left_padding}, ${curve_g_height + top_padding})`)
         .attr('class', 'axis')
-        .call(d3.axisBottom(density_scale).ticks(10, ".1f"));
+        .call(d3.axisBottom(density_scale).ticks(10, ".1f"))
+        .style('font-size', $('#svg_div').width() * 13/_svg_width + 'px');
+
 
     // r_axis_g
     svg.append('g')
         .attr('id', 'r_axis_g')
         .attr('transform', `translate(${left_padding}, ${top_padding})`)
         .attr('class', 'axis')
-        .call(d3.axisLeft(r_scale).ticks(10, ".2f"));
+        .call(d3.axisLeft(r_scale).ticks(10, ".2f"))
+        .style('font-size', $('#svg_div').width() * 13/_svg_width + 'px');
 
     const curve_g = svg.append('g')
         .attr('id', 'curve_g')
@@ -120,24 +131,24 @@ function data_handle_upload() {
     // update_button_rect
     svg.append('rect')
         .attr('id', 'update_button_rect')
-        .attr('width', 100)
-        .attr('height', 40)
-        .attr('x', svg_width - right_padding - 110)
-        .attr('y', curve_g_height - 725)
-        .attr('rx', 3)
-        .attr('ry', 3)
+        .attr('width', $('#svg_div').width() * 100/_svg_width)
+        .attr('height', $('#svg_div').height() * 40/_svg_height)
+        .attr('x', $('#svg_div').width() * (_svg_width - _right_padding - 110)/_svg_width)
+        .attr('y', $('#svg_div').height() * (_curve_g_height - 725)/_svg_height)
+        .attr('rx', $('#svg_div').width() * 3 / _svg_width + 'px')
+        .attr('ry', $('#svg_div').height() * 3 / _svg_height + 'px')
         .attr('fill', 'orange')
         .attr('stroke', '#888')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', $('#svg_div').width() * 2/_svg_width)
         .on('mouseover', function () {
             d3.select(this)
                 .attr('stroke', '#555')
-                .attr('stroke-width', 3);
+                .attr('stroke-width', $('#svg_div').width() * 3/_svg_width);
         })
         .on('mouseout', function () {
             d3.select(this)
                 .attr('stroke', '#888')
-                .attr('stroke-width', 3);
+                .attr('stroke-width', $('#svg_div').width() * 3/_svg_width);
         })
         .on('click', function () {
             $("#spinner_title").html("Updating...");
@@ -154,19 +165,19 @@ function data_handle_upload() {
 
     svg.append('text')
         .attr('id', 'update_button_text')
-        .attr('font-size', '18px')
+        .attr('font-size', $('#svg_div').width() * 18 / _svg_width + 'px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'middle')
         .attr('text-anchor', 'middle')
         .attr('font-weight', 'bold')
-        .attr('x', svg_width - right_padding - 95 + 70 / 2)
-        .attr('y', curve_g_height - 720 + 30 / 2)
+        .attr('x', $('#svg_div').width() * (_svg_width - _right_padding - 95 + 70 / 2) / _svg_width)
+        .attr('y', $('#svg_div').height() * (_curve_g_height - 720 + 30 / 2) / _svg_height)
         .text('update');
 
     // curve_g_bg_rect
     curve_g.append('rect')
-        .attr('width', svg_width - left_padding - right_padding)
-        .attr('height', svg_height - top_padding - bottom_padding)
+        .attr('width', $('#svg_div').width() * (_svg_width - _left_padding - _right_padding) / _svg_width)
+        .attr('height', $('#svg_div').height() * (_svg_height - _top_padding - _bottom_padding) / _svg_height)
         .attr('fill-opacity', 0)
         .attr('stroke', '#888');
 
@@ -224,32 +235,32 @@ function data_handle_upload() {
     curve_g.append('path')
         .attr('id', 'min_r_line')
         .attr('stroke', '#888')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', $('#svg_div').width() * 2 / _svg_width)
         .attr('stroke-dasharray', ("5, 3"))
         .attr('d', line([[0, min_r_y], [curve_g_width, min_r_y]]));
     const quantile_line = curve_g.append('path')
         .attr('id', 'quantile_line')
         .attr('stroke', 'red')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', $('#svg_div').width() * 2 / _svg_width)
         .attr('stroke-dasharray', ("5, 3"))
-        .attr('d', line([[curve_g_width, 0], [curve_g_width, svg_height]]));
+        .attr('d', line([[curve_g_width, 0], [curve_g_width, $('#svg_div').height()]]));
     const quantile_text = curve_g.append('text')
         .attr('id', 'quantile_text')
-        .attr('font-size', '13px')
+        .attr('font-size', $('#svg_div').width() * 13 / _svg_width + 'px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'hanging')
         .attr('text-anchor', 'start')
         .attr('font-weight', 'bold')
         .attr('x', curve_g_width)
-        .attr('y', 15)
-        .attr('dx', 5)
+        .attr('y', $('#svg_div').height() * 15 / _svg_height)
+        .attr('dx', $('#svg_div').width() * 5 / _svg_width)
         .text('quantile=' + cur_quantile);
 
     // k_line
     curve_g.append('path')
         .attr('id', 'k_line')
         .attr('stroke', '#888')
-        .attr('stroke-width', 3)
+        .attr('stroke-width', $('#svg_div').width() * 3 / _svg_width)
         .attr('stroke-dasharray', ("7, 3"))
         .attr('d', line([[k_x, 0], [k_x, curve_g_height]]));
 
@@ -258,17 +269,17 @@ function data_handle_upload() {
         .attr('d', line(pack_r_points))
         .attr('fill', 'none')
         .attr('stroke', '#c00000')
-        .attr('stroke-width', 4);
+        .attr('stroke-width', $('#svg_div').width() * 4 / _svg_width);
     const draw_r_curve1 = curve_g.append('path')
         .attr('id', 'draw_r_curve1')
         .attr('fill', 'none')
         .attr('stroke', 'black')
-        .attr('stroke-width', 2);
+        .attr('stroke-width', $('#svg_div').width() * 2 / _svg_width);
     const draw_r_curve2 = curve_g.append('path')
         .attr('id', 'draw_r_curve2')
         .attr('fill', 'none')
         .attr('stroke', 'black')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', $('#svg_div').width() * 2 / _svg_width)
 
     const x2y = solve(pack_r_curve.node());
     const k_y = x2y(k_x);
@@ -280,7 +291,7 @@ function data_handle_upload() {
     const density_preservation_zone = curve_g.append('rect')
         .attr('id', 'density_preservation_zone')
         .attr('width', curve_g_width)
-        .attr('height', 40)
+        .attr('height', $('#svg_div').height() * 40 / _svg_height)
         .attr('x', 0)
         .attr('y', curve_g_height)
         .attr('fill', '#70ad47')
@@ -289,7 +300,7 @@ function data_handle_upload() {
     const tangent_zone = curve_g.append('rect')
         .attr('id', 'tangent_zone')
         .attr('width', 0)
-        .attr('height', 40)
+        .attr('height', $('#svg_div').height() * 40 / _svg_height)
         .attr('x', curve_g_width)
         .attr('y', curve_g_height)
         .attr('fill', '#ed7d31')
@@ -297,23 +308,23 @@ function data_handle_upload() {
         .attr('stroke', '#ae5a21');
     const density_zone_text = curve_g.append('text')
         .attr('id', 'density_zone_text')
-        .attr('font-size', '13px')
+        .attr('font-size', $('#svg_div').width() * 13 / _svg_width + 'px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'middle')
         .attr('text-anchor', 'middle')
         .attr('font-weight', 'bold')
         .attr('x', curve_g_width / 2)
-        .attr('y', curve_g_height + 20 + 10)
+        .attr('y', $('#svg_div').height() * (_curve_g_height + 20 + 10) / _svg_height)
         .text('100%');
     const tangent_zone_text = curve_g.append('text')
         .attr('id', 'tangent_zone_text')
-        .attr('font-size', '13px')
+        .attr('font-size', $('#svg_div').width() * 13 / _svg_width + 'px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'middle')
         .attr('text-anchor', 'middle')
         .attr('font-weight', 'bold')
         .attr('x', curve_g_width)
-        .attr('y', curve_g_height + 20 + 10)
+        .attr('y', $('#svg_div').height() * (_curve_g_height + 20 + 10) / _svg_height)
         .text('');
 
     function update_draw_r_curve() {
@@ -362,7 +373,7 @@ function data_handle_upload() {
         }
         json_array.length = 0;
 
-        data_points.map(function (item){
+        data_points.map(function (item) {
             json_array.push({
                 x: item['x'],
                 y: item['y'],
@@ -375,9 +386,9 @@ function data_handle_upload() {
     }
 
     //json save event
-    json_text.on('click',function(){
+    json_text.on('click', function () {
         let content = JSON.stringify(json_array);
-        let fileName = has_upload == 1 ? "Ours.json" : algorithm+".json"
+        let fileName = has_upload == 1 ? "Ours.json" : algorithm + ".json"
         let blob = new Blob([content], {type: "text/plain;charset=utf-8"});
         saveAs(blob, fileName);
     })
@@ -402,7 +413,7 @@ function data_handle_upload() {
     }
 
     function hd_control_point_drag_start() {
-        d3.select(this).attr('stroke-width', 2);
+        d3.select(this).attr('stroke-width', $('#svg_div').width() * 2 / _svg_width);
     }
 
     function hd_control_point_drag_move(event) {
@@ -455,7 +466,7 @@ function data_handle_upload() {
         .attr('id', 'hd_control_point')
         .attr('cx', hd_control_point_x)
         .attr('cy', hd_control_point_y)
-        .attr('r', 6)
+        .attr('r', $('#svg_div').height() * 6 / _svg_height)
         .attr('fill', 'red')
         .attr('stroke', 'black');
     hd_control_point.append('title')
@@ -464,7 +475,7 @@ function data_handle_upload() {
 
 
     function ld_control_point_drag_start() {
-        d3.select(this).attr('stroke-width', 2);
+        d3.select(this).attr('stroke-width', $('#svg_div').width() * 2 / _svg_width + 'px');
     }
 
     function ld_control_point_drag_move(event) {
@@ -530,7 +541,7 @@ function data_handle_upload() {
         .attr('id', 'ld_control_point')
         .attr('cx', ld_control_point_x)
         .attr('cy', ld_control_point_y)
-        .attr('r', 6)
+        .attr('r', $('#svg_div').height() * 6 / _svg_height)
         .attr('fill', 'red')
         .attr('stroke', 'black');
     ld_control_point.call(ld_control_point_drag);
@@ -538,26 +549,26 @@ function data_handle_upload() {
     // k_text
     curve_g.append('text')
         .attr('id', 'k_text')
-        .attr('font-size', '13px')
+        .attr('font-size', $('#svg_div').width() * 13 / _svg_width + 'px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'hanging')
         .attr('text-anchor', 'end')
         .attr('font-weight', 'bold')
-        .attr('x', k_x - 12)
-        .attr('y', 15)
-        .attr('dx', 5)
+        .attr('x', $('#svg_div').width() * (k_x - 12) / _svg_width)
+        .attr('y', $('#svg_div').height() * 15 / _svg_height)
+        .attr('dx', $('#svg_div').width() * 5 / _svg_width)
         .text('k=' + k);
 
     const ld_r_text = curve_g
         .append('text')
         .attr('id', 'ld_r_text')
-        .attr('font-size', '13px')
+        .attr('font-size', $('#svg_div').width() * 13 / _svg_width + 'px')
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'middle')
         .attr('text-anchor', 'end')
         .attr('font-weight', 'bold')
         .attr('x', 0)
         .attr('y', min_r_y)
-        .attr('dx', -5)
+        .attr('dx', $('#svg_div').width() * (-5) / _svg_width)
         .text(d3.format(".2f")(min_r));
 }

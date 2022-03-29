@@ -71,10 +71,10 @@ function draw(points) {
 
     for (const [i, p] of Object.entries(points)) {
         opacities[i] = original_data_t;
-        sizes[i] = p.draw_r;
+        sizes[i] = p.draw_r * width / canvas_width;
         vertex.x = p.x;
         vertex.y = height - p.y;
-        vertex.z = 1;
+        vertex.z = 1 * width / canvas_width;
         vertex.toArray(positions, i * 3);
         const c = d3.hsl(p.color);
         color.setHSL(c.h / 360, c.s, c.l);
@@ -105,12 +105,12 @@ function draw(points) {
     scene.add(circles);
 
 
-    const initial_scale = 1;
+    const initial_scale = 1 * width / canvas_width;
 
     let initial_transform = d3.zoomIdentity
-        .translate(width / 2, height / 2)
+        .translate(width / 2, canvas_height-height / 2)
         .scale(initial_scale)
-        .translate(-width / 2, height / 2)
+        .translate(-canvas_width / 2, -(canvas_height-height)/2)
     zoomBehavior.transform(canvas, initial_transform);
     camera.fov = needed_fov(height, camera.position.z, initial_scale);
     camera.updateProjectionMatrix();

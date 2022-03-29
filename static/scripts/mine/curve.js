@@ -2,15 +2,15 @@ const div_height = 900, preview_width = 900, editor_width = 900, padding = 30, p
 const div_width = preview_width + editor_width + padding2;
 const select_div_height = 40;
 
-const svg_width = 800;
-const svg_height = 800;
-const left_padding = 35;
-const right_padding = 15;
-const bottom_padding = 45;
-const top_padding = 10;
-const curve_g_height = svg_height - bottom_padding - top_padding;
-const curve_g_width = svg_width - left_padding - right_padding;
-const k_x = 100;
+const _svg_width = 800;
+const _svg_height = 800;
+const _left_padding = 50;
+const _right_padding = 15;
+const _bottom_padding = 45;
+const _top_padding = 10;
+const _curve_g_height = _svg_height - _bottom_padding - _top_padding;
+const _curve_g_width = _svg_width - _left_padding - _right_padding;
+const _k_x = 100;
 const canvas_width = 800;
 const canvas_height = 800;
 
@@ -152,7 +152,7 @@ const fileTypes = [
 ];
 
 let data_name = 'CS_rankings';
-let algorithm = 'Original';
+let algorithm = 'Ours(adjustable)';
 let [k, size, max_grid_length] = data_name2values[data_name];
 console.log('data_name:', data_name);
 console.log('k:', k);
@@ -177,22 +177,36 @@ let size_change = 0;
 
 if (data_name == "CS_rankings" || data_name == "DBLP_samples") special_data_symbol = 1;
 
+
 const board = d3.select('body')
     .append('div')
     .attr('id', 'board')
-    .style('width', div_width + 'px')
-    .style('height', '100%')
+    .style('width', '100%')
     .style('border', '10px solid #6bc26c')
     .style('border-radius', '2%')
-    .style('margin', '15px')
     .style('padding', '20px')
     .style('background-color', '#F8F8FF')
+
+const title = board
+    .append('div')
+    .attr('id', 'title_div')
+    .style('height', '200px')
+    .style('margin', '20px')
+    .style('margin-bottom', '60px')
+    .style('border', '10px dashed #000000')
+    .style('border-radius', '2%')
+    .style('display', 'flex')
+    .style('justify-content', 'center')
+    .style('align-items', 'center')
+    .html('scatterplotUnfold')
+    .style('font-size', '60px')
+    .style('font-weight', 'bold')
 
 const select_div = board
     .append('div')
     .style('margin-bottom', '8px')
     .style('display', 'flex')
-    .style('width', div_width + 'px')
+    .style('width', '100%')
     .style('height', select_div_height + 'px');
 
 //DataSets choose
@@ -410,29 +424,34 @@ spinner_button.append('div')
 
 const plot_div = board.append('div')
     .style('display', 'flex')
-    .style('width', div_width + 'px')
-    .style('height', div_height + 'px');
+    //.style('flex-wrap', 'wrap')
+    .style('width', '100%')
+    //.style('height', div_height + 'px');
 
 
 const l_win = plot_div.append('div')
-    .style('width', (canvas_width + 5) + 'px')
-    .style('height', (canvas_height + 5) + 'px')
+    .attr('id', 'l_win')
+    .style('width', '47.5%')
+    .style('height', '43vw')
     .style('border', '2px solid #888')
+    .style('background-color', 'white')
     .style('position', 'relative');
+
+console.log($('#l_win').width(), $('#l_win').height())
 
 
 const canvas = l_win.append('canvas')
     .attr('id', 'my_canvas')
-    .attr('width', canvas_width)
-    .attr('height', canvas_height)
+    .attr('width', $('#l_win').width()-7)
+    .attr('height', $('#l_win').height())
     .style('background-color', 'white')
     .style('position', 'absolute');
 
 const font_awesome_svg = l_win.append('svg')
     .attr('id', 'font_awesome_svg')
-    .attr('width', 30)
+    .attr('width', $('#l_win').width() * 5/100)
     .attr('height', 100)
-    .attr('transform', `translate(${canvas_width - 30}, 10)`)
+    .attr('transform', `translate(${$('#l_win').width() * 0.935}, ${$('#l_win').width() * 0.0125})`)
     .style('position', 'absolute');
 
 const statistics_svg = l_win.append('svg')
@@ -443,40 +462,32 @@ const statistics_svg = l_win.append('svg')
     .style('position', 'absolute');
 
 const svg = plot_div.append('div')
-    .style('width', (svg_width + 5) + 'px')
-    .style('height', (svg_height + 5) + 'px')
+    .attr('id', 'svg_div')
+    .style('width', '47.5%')
+    .style('height', '43vw')
     .style('border', '2px solid #888')
-    .style('margin-left', 100 + 'px')
+    .style('margin-left', '5%')
     .style('background', "#ececec")
     .append('svg')
-    .attr('width', svg_width)
-    .attr('height', svg_height)
+    .attr('width', '100%')
+    .attr('height', '100%')
     .style('background-color', 'white');
 
 update_plot();
-
-//data_number and label_number
-const data_number = l_win.append('text')
-    .attr('font-size', '13px')
-    .attr('font-family', 'helvetica')
-    .attr('alignment-baseline', 'middle')
-    .attr('text-anchor', 'end')
-    .attr('font-weight', 'bold')
-    .text("点的个数")
 
 //canvas background color
 let light_on = true;
 
 const toolbox_g = font_awesome_svg.append('g')
     .attr('id', 'toolbox_g')
-    .attr('transform', `translate(10, 10)`);
+    .attr('transform', `translate(${$('#l_win').width()/90}, ${$('#l_win').width()/80})`);
 
 const img_text = toolbox_g.append('text')
     .attr('id', 'img_text')
     .attr('class', 'far')
-    .attr('y', 2)
+    .attr('y', $('#l_win').width()/400)
     .attr('text-anchor', 'middle')
-    .attr('font-size', '25px')
+    .attr('font-size', $('#l_win').width()*3/100)
     .attr('font-family', 'helvetica')
     .attr('alignment-baseline', 'central')
     .attr('fill', light_on ? 'black' : 'white')
@@ -497,9 +508,9 @@ const img_text = toolbox_g.append('text')
 const json_text = toolbox_g.append('text')
     .attr('id', 'json_text')
     .attr('class', 'far')
-    .attr('y', 36)
+    .attr('y', $('#l_win').width()*9/200)
     .attr('text-anchor', 'middle')
-    .attr('font-size', '25px')
+    .attr('font-size', $('#l_win').width()*3/100)
     .attr('font-family', 'helvetica')
     .attr('alignment-baseline', 'central')
     .attr('fill', light_on ? 'black' : 'white')
@@ -518,9 +529,9 @@ const json_text = toolbox_g.append('text')
 const light_text = toolbox_g.append('text')
     .attr('id', 'light_text')
     .attr('class', 'far')
-    .attr('y', 70)
+    .attr('y', $('#l_win').width()*7/80)
     .attr('text-anchor', 'middle')
-    .attr('font-size', '25px')
+    .attr('font-size', $('#l_win').width()*3/100)
     .attr('font-family', 'helvetica')
     .attr('alignment-baseline', 'central')
     .attr('fill', light_on ? 'black' : 'white')
@@ -550,15 +561,17 @@ const light_text = toolbox_g.append('text')
 
 
 const control_div = board.append('div')
+    .style('margin-top', '40px')
     .style('display', 'flex')
-    .style('width', div_width + 'px')
-    .style('height', '370px');
+    .style('width', '100%');
+    //.style('height', '370px');
 
 const original_div = control_div.append('div')
+    .attr('id', 'original_div')
     .style('display', 'flex')
     .style('flex-direction', 'column')
     .style('padding', '20px')
-    .style('width', '805px')
+    .style('width', '47.5%')
     .style('border', '3px dashed #888')
     .style('border-radius', '1.5%');
 
@@ -568,23 +581,24 @@ const original_title_div = original_div.append('div')
 original_title_div.append('span')
     .html("Appearance control")
     .style('font-weight', '700')
-    .style('font-size', '45px');
+    .style('font-size', $('#original_div').width()*45/820 + 'px');
 
 original_title_div.append('span')
     .style('display', 'flex')
     .style('align-items', 'flex-end')
-    .style('margin-left', '20px')
+    .style('margin-left', $('#original_div').width()*20/820 + 'px')
     .html("[Original]")
     .style('font-weight', '500')
-    .style('font-size', '20px');
+    .style('font-size', $('#original_div').width()*20/820 + 'px');
 
 const ours_div = control_div.append('div')
+    .attr('id', 'ours_div')
     .style('background', "#ececec")
     .style('display', 'flex')
     .style('flex-direction', 'column')
     .style('padding', '20px')
-    .style('width', '805px')
-    .style('margin-left', '100px')
+    .style('width', '47.5%')
+    .style('margin-left', '5%')
     .style('border', '3px dashed #888')
     .style('border-radius', '1.5%');
 
@@ -594,21 +608,21 @@ const ours_title_div = ours_div.append('div')
 ours_title_div.append('span')
     .html("Parameter control")
     .style('font-weight', '700')
-    .style('font-size', '45px');
+    .style('font-size', $('#ours_div').width()*45/820 + 'px');
 
 ours_title_div.append('span')
     .style('display', 'flex')
     .style('align-items', 'flex-end')
-    .style('margin-left', '20px')
+    .style('margin-left', $('#ours_div').width()*20/820 + 'px')
     .html("[Ours(adjustable)]")
     .style('font-weight', '500')
-    .style('font-size', '20px');
+    .style('font-size', $('#ours_div').width()*20/820 + 'px');
 
 
 const radius_control_div = original_div.append('div')
-    .style('height', '80px')
-    .style('margin-top', '50px')
-    .style('margin-bottom', '10px');
+    .style('height', $('#original_div').width()*80/820 + 'px')
+    .style('margin-top', $('#original_div').width()*50/820 + 'px')
+    .style('margin-bottom', $('#original_div').width()*10/820 + 'px');
 
 const radius_control_input = radius_control_div.append('input')
     .attr('id', 'radius_ex6')
@@ -619,13 +633,14 @@ const radius_control_input = radius_control_div.append('input')
     .attr('data-slider-max', '3')
     .attr('data-slider-step', '0.1')
     .attr('data-slider-value', '1')
+    .style('width', $('#original_div').width() * 36/100 + 'px')
 
 const radius_control_span = radius_control_div.append('span')
     .attr('id', 'radius_ex6CurrentSliderValLabel')
-    .style('width', '100px')
+    .style('width', $('#original_div').width()*100/820 + 'px')
     .html('radius: ')
-    .style('font-size', '35px')
-    .style('margin-left', '45px')
+    .style('font-size', $('#original_div').width()*35/820 + 'px')
+    .style('margin-left', $('#original_div').width()*45/820 + 'px')
     .append('span')
     .attr('id', 'radius_ex6SliderVal')
     .attr('class', 'slider_show')
@@ -650,8 +665,8 @@ $("#radius .slider-handle").css({
 });
 
 const transparency_control_div = original_div.append('div')
-    .style('height', '80px')
-    .style('margin-bottom', '10px');
+    .style('height', $('#original_div').width()*80/820 + 'px')
+    .style('margin-bottom', $('#original_div').width()*10/820 + 'px');
 
 const transparency_control_input = transparency_control_div.append('input')
     .attr('id', 'transparency_ex6')
@@ -662,12 +677,13 @@ const transparency_control_input = transparency_control_div.append('input')
     .attr('data-slider-max', '1')
     .attr('data-slider-step', '0.05')
     .attr('data-slider-value', '1')
+    .style('width', $('#original_div').width() * 36/100 + 'px')
 
 const transparency_control_span = transparency_control_div.append('span')
     .attr('id', 'transparency_ex6CurrentSliderValLabel')
     .html('transparency: ')
-    .style('font-size', '35px')
-    .style('margin-left', '45px')
+    .style('font-size', $('#original_div').width()*35/820 + 'px')
+    .style('margin-left', $('#original_div').width()*45/820 + 'px')
     .append('span')
     .attr('id', 'transparency_ex6SliderVal')
     .attr('class', 'slider_show')
@@ -692,8 +708,8 @@ $("#transparency .slider-handle").css({
 });
 
 const sampling_control_div = original_div.append('div')
-    .style('height', '80px')
-    .style('margin-bottom', '10px');
+    .style('height', $('#original_div').width()*80/820 + 'px')
+    .style('margin-bottom', $('#original_div').width()*10/820 + 'px');
 
 const sampling_control_input = sampling_control_div.append('input')
     .attr('id', 'sampling_ex6')
@@ -704,12 +720,13 @@ const sampling_control_input = sampling_control_div.append('input')
     .attr('data-slider-max', '1')
     .attr('data-slider-step', '0.1')
     .attr('data-slider-value', '1')
+    .style('width', $('#original_div').width() * 36/100 + 'px')
 
 const sampling_control_span = sampling_control_div.append('span')
     .attr('id', 'sampling_SliderValLabel')
     .html('sampling rate: ')
-    .style('font-size', '35px')
-    .style('margin-left', '45px')
+    .style('font-size', $('#original_div').width()*35/820 + 'px')
+    .style('margin-left', $('#original_div').width()*45/820 + 'px')
     .append('span')
     .attr('id', 'sampling_ex6SliderVal')
     .attr('class', 'slider_show')
@@ -734,9 +751,9 @@ $("#sampling .slider-handle").css({
 });
 
 const k_control_div = ours_div.append('div')
-    .style('height', '100px')
-    .style('margin-top', '50px')
-    .style('margin-bottom', '20px');
+    .style('height', $('#ours_div').width() * 100/820 + 'px')
+    .style('margin-top', $('#ours_div').width() * 50/820 + 'px')
+    .style('margin-bottom', $('#ours_div').width() * 20/820 + 'px');
 
 const k_control_input = k_control_div.append('input')
     .attr('id', 'k_ex6')
@@ -747,13 +764,14 @@ const k_control_input = k_control_div.append('input')
     .attr('data-slider-max', '10')
     .attr('data-slider-step', '1')
     .attr('data-slider-value', '3')
+    .style('width', $('#ours_div').width() * 36/100 + 'px')
 
 const k_control_span = k_control_div.append('span')
     .attr('id', 'k_ex6CurrentSliderValLabel')
-    .style('width', '100px')
+    .style('width', $('#ours_div').width() * 100/820 + 'px')
     .html('k: ')
-    .style('font-size', '35px')
-    .style('margin-left', '45px')
+    .style('font-size', $('#ours_div').width() * 35/820 + 'px')
+    .style('margin-left', $('#ours_div').width() * 45/820 + 'px')
     .append('span')
     .attr('id', 'k_ex6SliderVal')
     .attr('class', 'ours_slider_show')
@@ -779,8 +797,8 @@ $("#k .slider-handle").css({
 });
 
 const size_control_div = ours_div.append('div')
-    .style('height', '100px')
-    .style('margin-bottom', '20px');
+    .style('height', $('#ours_div').width() * 100/820 + 'px')
+    .style('margin-bottom', $('#ours_div').width() * 20/820 + 'px');
 
 const size_control_input = size_control_div.append('input')
     .attr('id', 'size_ex6')
@@ -791,12 +809,13 @@ const size_control_input = size_control_div.append('input')
     .attr('data-slider-max', '10')
     .attr('data-slider-step', '1')
     .attr('data-slider-value', '5')
+    .style('width', $('#ours_div').width() * 36/100 + 'px')
 
 const size_control_span = size_control_div.append('span')
     .attr('id', 'size_ex6CurrentSliderValLabel')
     .html('size: ')
-    .style('font-size', '35px')
-    .style('margin-left', '45px')
+    .style('font-size', $('#ours_div').width() * 35/820 + 'px')
+    .style('margin-left', $('#ours_div').width() * 45/820 + 'px')
     .append('span')
     .attr('id', 'size_ex6SliderVal')
     .attr('class', 'ours_slider_show')
@@ -822,7 +841,7 @@ $("#size .slider-handle").css({
 });
 
 $(".slider.slider-horizontal").css({
-    "margin-left": "80px"
+    "margin-left": $('#ours_div').width() * 80/820 + 'px'
 });
 
 
@@ -929,6 +948,9 @@ function update_plot() {
 }
 
 function data_formal(data_points){
+    const board = document.getElementById('board');
+    const {width, height} = board.getElementsByTagName('canvas')[0].getBoundingClientRect();
+
     const [x_min, x_max] = d3.extent(data_points, d => d.x);
     const [y_min, y_max] = d3.extent(data_points, d => d.y);
     const w = x_max - x_min;

@@ -10,13 +10,13 @@ function data_handle_HaGrid(data_points){
 
     const point_num = data_points.length;
 
-    const point_num_text = statistics_svg.append('text')
-        .attr('font-size', '20px')
+    statistics_svg.append('text')
+        .attr('font-size', $('#l_win').width()/40)
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'hanging')
         .attr('text-anchor', 'start')
-        .attr('x', 5)
-        .attr('y', 5)
+        .attr('x', $('#l_win').width()/160)
+        .attr('y', $('#l_win').width()/160)
         .attr('fill', light_on ? 'black' : 'white')
         .text('point num: ' + point_num);
 
@@ -31,13 +31,13 @@ function data_handle_HaGrid(data_points){
         label_set.add(value);
     })
 
-    const label_num_text = statistics_svg.append('text')
-        .attr('font-size', '20px')
+    statistics_svg.append('text')
+        .attr('font-size', $('#l_win').width()/40)
         .attr('font-family', 'helvetica')
         .attr('alignment-baseline', 'hanging')
         .attr('text-anchor', 'start')
-        .attr('x', 5)
-        .attr('y', 35)
+        .attr('x', $('#l_win').width()/160)
+        .attr('y', $('#l_win').width()*35/800)
         .attr('fill', light_on ? 'black' : 'white')
         .text('label num: ' + label_set.size);
 
