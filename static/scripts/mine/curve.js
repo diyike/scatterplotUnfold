@@ -379,7 +379,11 @@ const preview_div = file_upload.append('div')
 $("#file-upload").on("change", function () {
     //console.log(this.files[0].name);
     $("#spinner_title").html("Uploading...");
-    $("#spinner_div").toggle();
+
+    setTimeout(()=>{
+        $("#spinner_div").toggle();
+    }, 0);
+
     if (validFileType(this.files[0])) {
         setTimeout(()=>{
             $("#name_preview").html(this.files[0].name);
@@ -397,12 +401,12 @@ $("#file-upload").on("change", function () {
             //console.log(`uploaded file path is ${this.value}`);
 
             initialize_slider_value();
-        }, 1);
+        }, 10);
 
         setTimeout(()=>{
             $("#spinner_title").html("Computing...");
             update_plot();
-        }, 2);
+        }, 20);
     } else {
         $("#name_preview").html('File ' + this.files[0].name + ' is not a json file. Please update your selection');
     }

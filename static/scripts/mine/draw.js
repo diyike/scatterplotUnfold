@@ -120,9 +120,9 @@ function draw(points) {
     //render_initialize();
 
     canvas.on("mouseover", function (){
-            if(show == 0){
+            if(show == 0 || show == 1){
                 renderer.render(scene, camera);
-                show = 1;
+                show++;
             }
         });
 }
