@@ -202,15 +202,17 @@ const title = board
     .style('justify-content', 'center')
     .style('align-items', 'center')
     .html('scatterplotUnfold')
-    .style('font-size', '60px')
+    .style('font-size', $('#title_div').width() * 60/1192+ 'px')
     .style('font-weight', 'bold')
 
 const select_div = board
     .append('div')
-    .style('margin-bottom', '8px')
+    .attr('id', 'select_div')
     .style('display', 'flex')
     .style('width', '100%')
+    .style('margin-bottom', '30px')
     .style('height', select_div_height + 'px');
+
 
 //DataSets choose
 const data_choose_input_div = select_div.append('div')
@@ -219,7 +221,7 @@ const data_choose_input_div = select_div.append('div')
 
 data_choose_input_div.append('text')
     .text('Dataset: ')
-    .style('font-size', '20px')
+    .style('font-size', $('#select_div').width()*20/1800 + 'px')
 
 data_choose_input_div.append('button')
     .attr('class', 'btn btn-secondary dropdown-toggle')
@@ -228,7 +230,11 @@ data_choose_input_div.append('button')
     .attr('data-toggle', 'dropdown')
     .attr('aria-haspopup', 'true')
     .attr('aria-expanded', 'false')
-    .html(data_name);
+    .style('text-align', 'center')
+    .style('width', $('#select_div').width()*360/1800 + 'px')
+    //.style('height', $('#select_div').width()*36/1400 + 'px')
+    .html(data_name)
+    .style('font-size', $('#select_div').width()*13/1800 + 'px');
 
 data_choose_input_div.append('div')
     .attr('class', 'dropdown-menu')
@@ -266,11 +272,11 @@ $('a.dropdown-item').on('click', function () {
 const algor_choose_input_div = select_div.append('div')
     .attr('id', 'algor_choose_input_div')
     .attr('class', 'dropdown show')
-    .style('margin-left', '20px');
+    .style('margin-left', $('#select_div').width()*20/1800 + 'px');
 
 algor_choose_input_div.append('text')
     .text('Algorithm: ')
-    .style('font-size', '20px');
+    .style('font-size', $('#select_div').width()*20/1800 + 'px');
 
 algor_choose_input_div.append('button')
     .attr('class', 'btn btn-secondary dropdown-toggle')
@@ -279,7 +285,10 @@ algor_choose_input_div.append('button')
     .attr('data-toggle', 'dropdown')
     .attr('aria-haspopup', 'true')
     .attr('aria-expanded', 'false')
-    .html(algorithm);
+    .style('width', $('#select_div').width()*240/1800 + 'px')
+    //.style('height', $('#select_div').width()*36/1400 + 'px')
+    .html(algorithm)
+    .style('font-size', $('#select_div').width()*13/1800 + 'px');;
 
 algor_choose_input_div.append('div')
     .attr('class', 'dropdown-menu')
@@ -314,7 +323,7 @@ $('b.dropdown-item').on('click', function () {
 const file_upload = select_div.append('div')
     .attr('id', 'file_upload_div')
     .attr('class', 'dropdown show')
-    .style('margin-left', '65px')
+    .style('margin-left', $('#select_div').width()*65/1800 + 'px')
     .style('display', 'flex')
 
 const file_upload_div = file_upload.append('form')
@@ -328,6 +337,7 @@ file_upload_div.append('label')
     .style('border-radius', '4%')
     .style('padding', '4px 10px')
     .html('upload json file')
+    .style('font-size', $('#select_div').width()*10/1800 + 'px')
     .style('font-weight', 'bold')
 
 file_upload_div.append('input')
@@ -358,11 +368,11 @@ const preview_div = file_upload.append('div')
     .attr('id', 'name_preview')
     .style('display', 'flex')
     .style('align-items', 'center')
-    .style('margin-left', '25px')
+    .style('margin-left', $('#select_div').width()*25/1800 + 'px')
     .style('line-height', '100%')
     .html('No files is uploaded')
     .style('font-weight', '600')
-    .style('font-size', '15px');
+    .style('font-size', $('#select_div').width()*15/1800 + 'px');
 
 
 $("#file-upload").on("change", function () {
@@ -404,7 +414,7 @@ function validFileType(file) {
 //spinner
 const spinner_div = select_div.append('div')
     .attr('id', 'spinner_div')
-    .style('margin-left', '60px')
+    .style('margin-left', $('#select_div').width()*60/1800 + 'px')
     .style('display', 'flex')
 
 $("#spinner_div").hide(); // hide spinner_div
@@ -418,12 +428,14 @@ const spinner_button = spinner_div.append('button')
 spinner_button.append('span')
     .attr('class', 'spinner-border spinner-border-sm')
     .attr('role', 'status')
-    .attr('aria-hidden', 'true')
+    .attr('aria-hidden', 'true');
 
 spinner_button.append('div')
     .attr('id', 'spinner_title')
-    .style('width', '120px')
+    .style('width', $('#select_div').width()*120/1800 + 'px')
+    .style('margin-left', $('#select_div').width()*10/1800 + 'px')
     .html('Processing...')
+    .style('font-size', $('#select_div').width()*13/1800 + 'px');
 
 const plot_div = board.append('div')
     .style('display', 'flex')
@@ -445,7 +457,7 @@ console.log($('#l_win').width(), $('#l_win').height())
 
 const canvas = l_win.append('canvas')
     .attr('id', 'my_canvas')
-    .attr('width', $('#l_win').width()-7)
+    .attr('width', $('#l_win').width())
     .attr('height', $('#l_win').height())
     .style('background-color', 'white')
     .style('position', 'absolute');
@@ -453,15 +465,15 @@ const canvas = l_win.append('canvas')
 const font_awesome_svg = l_win.append('svg')
     .attr('id', 'font_awesome_svg')
     .attr('width', $('#l_win').width() * 5/100)
-    .attr('height', 100)
+    .attr('height', $('#l_win').width() / 8)
     .attr('transform', `translate(${$('#l_win').width() * 0.935}, ${$('#l_win').width() * 0.0125})`)
     .style('position', 'absolute');
 
 const statistics_svg = l_win.append('svg')
     .attr('id', 'statistics_svg')
-    .attr('width', 300)
-    .attr('height', 50)
-    .attr('transform', `translate(5, 5)`)
+    .attr('width', $('#l_win').width()*300/800)
+    .attr('height', $('#l_win').width()*50/800)
+    .attr('transform', `translate(${$('#l_win').width()*5/800}, ${$('#l_win').width()*5/800})`)
     .style('position', 'absolute');
 
 const svg = plot_div.append('div')
@@ -951,6 +963,36 @@ function update_plot() {
 }
 
 function data_formal(data_points){
+    const board = document.getElementById('board');
+    const {width, height} = board.getElementsByTagName('canvas')[0].getBoundingClientRect();
+
+    const [x_min, x_max] = d3.extent(data_points, d => d.x);
+    const [y_min, y_max] = d3.extent(data_points, d => d.y);
+    const w = x_max - x_min;
+    const h = y_max - y_min;
+
+    const scale_x = d3.scaleLinear()
+        .domain([x_min, x_max])
+        .range([0, canvas_width]);
+    const scale_y = d3.scaleLinear()
+        .domain([y_min, y_max])
+        .range([0, canvas_height]);
+
+    for (const p of data_points) {
+        if (w < h) {
+            p.r = canvas_width / h * p.r;
+        } else {
+            p.r = canvas_width / w * p.r;
+        }
+
+        p.x = scale_x(p.x);
+        p.y = scale_y(p.y);
+    }
+
+    return data_points;
+}
+
+function data_formal_for_draw(data_points){
     const board = document.getElementById('board');
     const {width, height} = board.getElementsByTagName('canvas')[0].getBoundingClientRect();
 
