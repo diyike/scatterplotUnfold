@@ -177,12 +177,15 @@ let size_change = 0;
 
 if (data_name == "CS_rankings" || data_name == "DBLP_samples") special_data_symbol = 1;
 
+$(window).resize( function (){
+    location.reload()
+});
 
 const board = d3.select('body')
     .append('div')
     .attr('id', 'board')
     .style('width', '100%')
-    .style('border', '10px solid #6bc26c')
+    .style('border', '6px solid #66CDAA')
     .style('border-radius', '2%')
     .style('padding', '20px')
     .style('background-color', '#F8F8FF')
@@ -193,7 +196,7 @@ const title = board
     .style('height', '200px')
     .style('margin', '20px')
     .style('margin-bottom', '60px')
-    .style('border', '10px dashed #000000')
+    .style('border', '10px dashed #2E8B57')
     .style('border-radius', '2%')
     .style('display', 'flex')
     .style('justify-content', 'center')
