@@ -13,7 +13,7 @@ const _curve_g_width = _svg_width - _left_padding - _right_padding;
 const _k_x = 100;
 const canvas_width = 800;
 const canvas_height = 800;
-const scale = window.devicePixelRatio < 2 ? 3 - window.devicePixelRatio : 1;
+const scale = window.devicePixelRatio < 2 ? sqrt(3 - window.devicePixelRatio) : 1;
 
 console.log(scale);
 
@@ -255,21 +255,27 @@ data_choose_input_div.append('div')
 $('a.dropdown-item').on('click', function () {
     const cur_data_name = $(this).text();
     $('#data_dropdownMenuButton').html(cur_data_name);
-    if (cur_data_name !== data_name) {
-        data_name = cur_data_name;
-        if (data_name == "CS_rankings" || data_name == "DBLP_samples") special_data_symbol = 1;
-        else special_data_symbol = 0;
-        has_upload = 0;
-        k_change = 0;
-        size_change = 0;
-        max_grid_length = data_name2values[data_name][2];
+    if (cur_data_name !== data_name || has_upload == 1) {
+        setTimeout(()=>{
+            data_name = cur_data_name;
+            if (data_name == "CS_rankings" || data_name == "DBLP_samples") special_data_symbol = 1;
+            else special_data_symbol = 0;
+            has_upload = 0;
+            k_change = 0;
+            size_change = 0;
+            max_grid_length = data_name2values[data_name][2];
 
-        $("#name_preview").html('No files is uploaded');
+            $("#name_preview").html('No files is uploaded');
 
-        //initialize sliders
-        initialize_slider_value();
+            //initialize sliders
+            initialize_slider_value();
 
-        update_plot();
+            $("#spinner_div").toggle();
+        }, 0)
+
+        setTimeout(()=>{
+            update_plot();
+        }, 10)
     }
 });
 
@@ -309,18 +315,25 @@ algor_choose_input_div.append('div')
 $('b.dropdown-item').on('click', function () {
     const cur_algor = $(this).text();
     $('#algor_dropdownMenuButton').html(cur_algor);
-    if (cur_algor !== algorithm) {
-        algorithm = cur_algor;
-        console.log(algorithm);
-        has_upload = 0;
-        k_change = 0;
-        size_change = 0;
+    if (cur_algor !== algorithm || has_upload == 1) {
+        setTimeout(()=>{
+            algorithm = cur_algor;
+            console.log(algorithm);
+            has_upload = 0;
+            k_change = 0;
+            size_change = 0;
 
-        $("#name_preview").html('No files is uploaded');
+            $("#name_preview").html('No files is uploaded');
 
-        initialize_slider_value();
+            initialize_slider_value();
 
-        update_plot();
+            $("#spinner_div").toggle();
+        }, 0)
+
+        setTimeout(()=>{
+            update_plot();
+        }, 10)
+
     }
 });
 
@@ -382,14 +395,12 @@ const preview_div = file_upload.append('div')
 
 $("#file-upload").on("change", function () {
     //console.log(this.files[0].name);
-    $("#spinner_title").html("Uploading...");
-
-    setTimeout(()=>{
-        $("#spinner_div").toggle();
-    }, 0);
 
     if (validFileType(this.files[0])) {
         setTimeout(()=>{
+            $("#spinner_title").html("Uploading...");
+            $("#spinner_div").toggle();
+
             $("#name_preview").html(this.files[0].name);
 
             const reader = new FileReader()
@@ -405,7 +416,7 @@ $("#file-upload").on("change", function () {
             //console.log(`uploaded file path is ${this.value}`);
 
             initialize_slider_value();
-        }, 10);
+        }, 0);
 
         setTimeout(()=>{
             $("#spinner_title").html("Computing...");
@@ -457,8 +468,8 @@ const plot_div = board.append('div')
 
 const l_win = plot_div.append('div')
     .attr('id', 'l_win')
-    .style('width', $('#plot_div').width() * 45/100 + 'px')
-    .style('height', $('#plot_div').width() * 45/100 + 'px')
+    .style('width', $('#plot_div').width() * 45/100/scale + 'px')
+    .style('height', $('#plot_div').width() * 45/100/scale + 'px')
     .style('border', '2px solid #888')
     .style('background-color', 'white')
     .style('position', 'relative');
@@ -489,8 +500,8 @@ const statistics_svg = l_win.append('svg')
 
 const svg = plot_div.append('div')
     .attr('id', 'svg_div')
-    .style('width', $('#plot_div').width() * 45/100 + 'px')
-    .style('height', $('#plot_div').width() * 45.6/100 + 'px')
+    .style('width', $('#plot_div').width() * 45/100/scale + 'px')
+    .style('height', $('#plot_div').width() * 45.6/100/scale + 'px')
     .style('border', '2px solid #888')
     .style('margin-left', '5%')
     .style('background', "#ececec")
@@ -499,7 +510,12 @@ const svg = plot_div.append('div')
     .attr('height', '100%')
     .style('background-color', 'white');
 
-update_plot();
+setTimeout(()=>{
+    $("#spinner_div").toggle();
+    setTimeout(()=>{
+        update_plot();
+    }, 10)
+}, 0)
 
 //canvas background color
 let light_on = true;
@@ -599,7 +615,7 @@ const original_div = control_div.append('div')
     .style('display', 'flex')
     .style('flex-direction', 'column')
     .style('padding', '20px')
-    .style('width', $('#control_div').width() * 45.5/100 + 'px')
+    .style('width', $('#control_div').width() * 45.5/100/scale + 'px')
     .style('border', '3px dashed #888')
     .style('border-radius', '1.5%');
 
@@ -625,7 +641,7 @@ const ours_div = control_div.append('div')
     .style('display', 'flex')
     .style('flex-direction', 'column')
     .style('padding', '20px')
-    .style('width', $('#control_div').width() * 45/100 + 'px')
+    .style('width', $('#control_div').width() * 45/100/scale + 'px')
     .style('margin-left', $('#control_div').width() * 5/100 + 'px')
     .style('border', '3px dashed #888')
     .style('border-radius', '1.5%');
@@ -681,7 +697,13 @@ $("#radius_ex6")
     })
     .on("slideStop", function (slideEvt) {
         original_data_r = slideEvt.value;
-        update_plot()
+        setTimeout(()=>{
+            $("#spinner_div").toggle();
+        }, 0)
+
+        setTimeout(()=>{
+            update_plot();
+        }, 10)
     });
 
 $("#radius .slider-selection").css({
@@ -724,7 +746,13 @@ $("#transparency_ex6")
     })
     .on("slideStop", function (slideEvt) {
         original_data_t = slideEvt.value;
-        update_plot()
+        setTimeout(()=>{
+            $("#spinner_div").toggle();
+        }, 0)
+
+        setTimeout(()=>{
+            update_plot();
+        }, 10)
     });
 
 $("#transparency .slider-selection").css({
@@ -767,7 +795,13 @@ $("#sampling_ex6")
     })
     .on("slideStop", function (slideEvt) {
         original_data_s = slideEvt.value;
-        update_plot();
+        setTimeout(()=>{
+            $("#spinner_div").toggle();
+        }, 0)
+
+        setTimeout(()=>{
+            update_plot();
+        }, 10)
     });
 
 $("#sampling .slider-selection").css({
@@ -813,7 +847,13 @@ $("#k_ex6")
     .on("slideStop", function (slideEvt) {
         k_change = 1;
         k = slideEvt.value;
-        update_plot()
+        setTimeout(()=>{
+            $("#spinner_div").toggle();
+        }, 0)
+
+        setTimeout(()=>{
+            update_plot();
+        }, 10)
     });
 
 $("#k .slider-selection").css({
@@ -857,7 +897,13 @@ $("#size_ex6")
     .on("slideStop", function (slideEvt) {
         size_change = 1;
         size = slideEvt.value;
-        update_plot()
+        setTimeout(()=>{
+            $("#spinner_div").toggle();
+        }, 0)
+
+        setTimeout(()=>{
+            update_plot();
+        }, 10)
     });
 
 $("#size .slider-selection").css({
@@ -905,9 +951,6 @@ function update_plot() {
             }
             else if (algorithm == "Original"){
                 $("#spinner_title").html("Processing...");
-                setTimeout(()=>{
-                    $("#spinner_div").toggle();
-                }, 0)
 
                 setTimeout(()=>{
                     data_handle_original(data_points);
@@ -919,9 +962,6 @@ function update_plot() {
             }
             else if (algorithm == "HaGrid"){
                 $("#spinner_title").html("Processing...");
-                setTimeout(()=>{
-                    $("#spinner_div").toggle();
-                }, 0)
 
                 setTimeout(()=>{
                     data_handle_HaGrid(data_points);
@@ -933,9 +973,6 @@ function update_plot() {
             }
             else if (algorithm == "DGrid"){
                 $("#spinner_title").html("Processing...");
-                setTimeout(()=>{
-                    $("#spinner_div").toggle();
-                }, 0)
 
                 setTimeout(()=>{
                     data_handle_DGrid(data_points);
@@ -947,9 +984,6 @@ function update_plot() {
             }
             else if (algorithm == "Ours(adjusted r)"){
                 $("#spinner_title").html("Processing...");
-                setTimeout(()=>{
-                    $("#spinner_div").toggle();
-                }, 0)
 
                 setTimeout(()=>{
                     data_handle_adjusted(data_points);
@@ -966,10 +1000,6 @@ function update_plot() {
                 else{
                     $("#spinner_title").html("Processing...");
                 }
-
-                setTimeout(()=>{
-                    $("#spinner_div").toggle();
-                }, 1)
 
                 setTimeout(()=>{
                     data_handle_ours(data_points);
@@ -1104,6 +1134,7 @@ function original_slider_control_enable() {
 function ours_slider_control_disable() {
     ours_div.style('background', "#ececec");
     svg.style('background', "#ececec");
+    svg.html('this section would be open only when the algorithm Ours(adjustable) is selected or the json file is uploaded')
     $(".ours_slider_input").slider("disable");
 
     $("#k .slider-selection").css({

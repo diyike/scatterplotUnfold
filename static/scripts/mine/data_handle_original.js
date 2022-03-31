@@ -2,6 +2,8 @@ function data_handle_original(data_points){
     original_slider_control_enable();
     ours_slider_control_disable();
 
+    //data_points = data_formal_for_draw(data_points);
+
     console.log("original data start handle");
     d3.shuffle(data_points)
     data_points = data_points.slice(0, Math.round(original_data_s * data_points.length))
