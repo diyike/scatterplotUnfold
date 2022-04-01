@@ -937,61 +937,58 @@ function update_plot() {
 
         d3.json(file_path).then(function (data_points) {
             if (has_upload == 1){
-                if(k != 3 || size != 5){
-                    $("#spinner_div").toggle();
-                }
 
                 setTimeout(()=>{
                     data_handle_upload();
-                }, 10);
+                }, 1);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 20);
+                }, 10);
             }
             else if (algorithm == "Original"){
                 $("#spinner_title").html("Processing...");
 
                 setTimeout(()=>{
                     data_handle_original(data_points);
-                }, 10);
+                }, 1);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 20);
+                }, 10);
             }
             else if (algorithm == "HaGrid"){
                 $("#spinner_title").html("Processing...");
 
                 setTimeout(()=>{
                     data_handle_HaGrid(data_points);
-                }, 10);
+                }, 1);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 20);
+                }, 10);
             }
             else if (algorithm == "DGrid"){
                 $("#spinner_title").html("Processing...");
 
                 setTimeout(()=>{
                     data_handle_DGrid(data_points);
-                }, 10);
+                }, 1);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 20);
+                }, 10);
             }
             else if (algorithm == "Ours(adjusted r)"){
                 $("#spinner_title").html("Processing...");
 
                 setTimeout(()=>{
                     data_handle_adjusted(data_points);
-                }, 10);
+                }, 1);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 20);
+                }, 10);
             }
             else if (algorithm == "Ours(adjustable)"){
                 if (k_change == 1 || size_change == 1){
@@ -1003,11 +1000,11 @@ function update_plot() {
 
                 setTimeout(()=>{
                     data_handle_ours(data_points);
-                }, 10);
+                }, 1);
 
                 setTimeout(()=>{
                     $("#spinner_div").toggle();
-                }, 20);
+                }, 10);
             }
 
         })
